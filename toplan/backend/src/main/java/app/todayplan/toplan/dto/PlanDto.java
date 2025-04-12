@@ -18,6 +18,7 @@ public class PlanDto {
     private LocalDate strtDt;
     private LocalDate endDt;
     private String userId;
+    private LocalDate dt;
 
     // Entity → DTO 변환용 정적 메서드
     public static PlanDto fromEntity(PlanEntity entity) {
@@ -30,7 +31,8 @@ public class PlanDto {
             entity.getBackColor(),
             entity.getStrtDt(),
             entity.getEndDt(),
-            entity.getBoard().getUserId()
+            entity.getBoard().getUserId(),
+            entity.getBoard().getDt()
         );
     }
 }

@@ -1,6 +1,7 @@
 package app.todayplan.toplan.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -21,5 +22,13 @@ public class PlanService {
     public List<PlanDto> getPlanList(String userId){
         List<PlanEntity> plans = planRepository.findPlansByBoard_UserId(userId);
         return plans.stream().map(PlanDto::fromEntity).collect(Collectors.toList());
+    }
+
+    public PlanEntity getPlanInfo(String userId, String planId){
+        System.out.println("쿼리실행전");
+        PlanEntity result = planRepository.findByPlanIdAndBoard_UserId(planId,userId).
+        orElseThrow(() -> new NoSuchElementException("해당플랜없음"));
+        System.out.println("쿼리실행후");
+        return result;
     }
 }
