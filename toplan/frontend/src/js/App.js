@@ -1,66 +1,72 @@
-import { getCalendar, getPlan, getPlanInfo } from './components/api.js';
+import { deletePlan, getCalendar, getPlan, getPlanInfo } from './components/api.js';
 import Calendar from './components/Calendar.js';
 import Plan from './components/Plan.js';
 export default function App($app){
-    
     this.state = {
-        calendar: "",
-        plan:""    
-    }
+        userId:'',
+        calendar:'',
+        plan:'',
+    };
     
-    const renderCalendar = async () => {
-        try {
-            const todayDt  = "2025-04-11";
-            const calendar = await getCalendar();
-            new Calendar({
-                $app
-                , initialState : calendar
-                , todayDt
-                , addPlanBtn: (btnId) => {
-                    console.log('플랜추가 >> ' + btnId);
-                }
-                });
-        } catch (error) {
-            console.error("달력조회에러", error);
-        }        
+    //달력조회
+    const renderCalendar = () => {
+        new Calendar({
+            $app,
+            initialState: this.state,
+            todayDt: window.util.getDateFormat('yyyy-MM-dd'),
+            addPlanBtn: (btnId) => {
+                console.log('플랜추가 >> ' + btnId);
+            }
+        });
     }
-    
-    const renderPlan = async () => {
-        try{
-            const userId = "원몽";      
-            const plan = await getPlan(userId);
 
-            this.setState({
-                ...this.state,
-                plan:plan
-            });
-
-            new Plan({
-                $app,
-                initialState: this.state,
-                planInfo: async ({planId,userId}) => {
-                    const planInfo = await getPlanInfo(planId,userId);
-                    return planInfo;
+    //플랜조회
+    const renderPlan = () => {
+        new Plan({
+            $app,
+            initialState: this.state,
+            planInfo: async (planId) => {
+                const planInfo = await getPlanInfo(planId,this.state.userId);
+                return planInfo;
+            },
+            planDelete : async (boardId) => {
+                const result = await deletePlan(boardId); //삭제
+                if(result){
+                    const newPlan = await getPlan(this.state.userId);
+                    return {result : result, newPlan: newPlan};
                 }
-            });
-        }catch(e){
-
-        }
+            }
+        });
     }
 
     this.setState = (newState) => {
         this.state = newState;
-        //render();
-    }
-
-    const render = async () => {
-        $app.innerHTML = ""; //화면초기화
-        await renderCalendar();
-        await renderPlan();
-    }
-    
-    const init = async () => {
         render();
+    };
+
+    const render = () => {
+        $app.innerHTML = '';
+
+        if(this.state.calendar){
+            renderCalendar();
+        };
+        if(this.state.plan){
+            renderPlan();
+        }
+    };
+
+    const init = async () => {
+        sessionStorage.setItem("userId", "원몽");
+        const userId = sessionStorage.getItem("userId");
+
+        const calendarData = await getCalendar();
+        const planData = await getPlan(userId);
+        this.setState({
+            ...this.state,
+            userId: userId,
+            calendar: calendarData,
+            plan: planData,
+        });
     }
 
     init();

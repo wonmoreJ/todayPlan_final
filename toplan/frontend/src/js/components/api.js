@@ -30,3 +30,7 @@ export const getPlanInfo = async(planId,userId) => {
     return await request(`${$URL}/planInfo?userId=${userId}&planId=${planId}`);
 }
 
+//플랜삭제
+export const deletePlan = async(planId) => {
+    return await request(`${$URL}/deleteplan/${planId}`,{method:'DELETE'});
+}

@@ -2,6 +2,7 @@ package app.todayplan.toplan.domain;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +33,7 @@ public class BoardEntity {
     @Column(name = "DT")
     private LocalDate dt;
 
-    @OneToOne(mappedBy = "board")
+    @OneToOne(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private PlanEntity plan;
 
     public Integer getId() {

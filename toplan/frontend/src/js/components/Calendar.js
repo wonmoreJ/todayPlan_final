@@ -6,10 +6,8 @@ export default function Calendar ({ $app, initialState, todayDt, addPlanBtn}) {
 
     $app.appendChild(this.$target);
 
-    console.log(this.state);
-
     this.template = () => {
-        let calendar = this.state;
+        let calendar = this.state.calendar;
         let temp = `<table>`;
 
         calendar.forEach((cal) => {
@@ -31,10 +29,6 @@ export default function Calendar ({ $app, initialState, todayDt, addPlanBtn}) {
         document.querySelectorAll('.add-plan-btn').forEach((btn) => {
             btn.addEventListener('click', (e) => {
                 let id = e.target.id.split('_')[1]; 
-                
-
-                    
-                
                 
                 addPlanBtn(id);
                 
