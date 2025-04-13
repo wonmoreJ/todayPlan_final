@@ -12,11 +12,18 @@ window.util = {
         if(!date){
             date = new Date();
         }
-
+        
         if (typeof date === "string") {
-          year = date.slice(0, 4);
-          month = date.slice(4, 6);
-          day = date.slice(6, 8);
+          if(date.length > 9){
+            year = date.slice(0, 4);
+            month = date.slice(5, 7);
+            day = date.slice(8, 10);
+          }else{
+            year = date.slice(0, 4);
+            month = date.slice(4, 6);
+            day = date.slice(6, 8);
+          }
+          
         } else {
           year = date.getFullYear().toString();
           month = (date.getMonth() + 1).toString().padStart(2, "0");

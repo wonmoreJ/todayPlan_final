@@ -23,6 +23,9 @@ public class CalendarEntity {
     @Column(name = "WEEK")
     private String week;
 
+    @Column(name = "EN_WEEK")
+    private String enWeek;
+
     @Column(name = "HOLIDAY_YN")
     private String holidayYn;
 
@@ -74,6 +77,14 @@ public class CalendarEntity {
 
     public void setWeek(String week) {
         this.week = week;
+    }
+
+    public String getEnWeek() {
+        return enWeek;
+    }
+
+    public void setEnWeek(String enWeek) {
+        this.enWeek = enWeek;
     }
 
     public String getHolidayYn() {

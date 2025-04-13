@@ -34,3 +34,7 @@ export const getPlanInfo = async(planId,userId) => {
 export const deletePlan = async(planId) => {
     return await request(`${$URL}/deleteplan/${planId}`,{method:'DELETE'});
 }
+
+export const insertplan = async(data)=>{
+    return await request(`${$URL}/insertplan`, { method: "POST", body:JSON.stringify(data) });
+}

@@ -9,12 +9,14 @@ export default function Calendar ({ $app, initialState, todayDt, addPlanBtn}) {
     this.template = () => {
         let calendar = this.state.calendar;
         let temp = `<table>`;
-
         calendar.forEach((cal) => {
             temp += `
-                    <tr id="${cal.dt}" tabindex="0">
-                        <td>
-                            <button id="btn_${cal.dt}" class="add-plan-btn">${cal.fullDate}</button>
+                    <tr id="${cal.dt}" tabindex="0" data-day="${cal.enWeek}">
+                        <td class="plan-list-cell">
+                            <button id="btn_${cal.dt}" class="add-plan-btn" data-strt=${cal.dt}>
+                                <span class="date">${cal.dt}</span>
+                                <span class="day">(${cal.week})</span>
+                            </button>
                         </td>
                     <tr>    
             `
@@ -25,15 +27,16 @@ export default function Calendar ({ $app, initialState, todayDt, addPlanBtn}) {
     
     this.render = () => {
         this.$target.innerHTML = this.template();
-        document.getElementById(todayDt).focus();
-        document.querySelectorAll('.add-plan-btn').forEach((btn) => {
-            btn.addEventListener('click', (e) => {
-                let id = e.target.id.split('_')[1]; 
-                
-                addPlanBtn(id);
-                
-            });
-        })
+        this.$target.addEventListener('click', (e) => {
+            if(e.target.closest('.add-plan-btn')){
+                const dt = e.target.closest('.add-plan-btn').dataset.strt;
+                document.getElementById('customMdStrtDt').value = dt;
+                document.getElementById('customModalOverlay').classList.add('show');
+            }
+        });
+        document.getElementById(todayDt).focus(); //오늘날짜로 이동
+        document.getElementById(todayDt).setAttribute("data-today","true");
+        
     };
 
     this.render();

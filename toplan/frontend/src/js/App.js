@@ -1,4 +1,4 @@
-import { deletePlan, getCalendar, getPlan, getPlanInfo } from './components/api.js';
+import { deletePlan, getCalendar, getPlan, getPlanInfo, insertplan } from './components/api.js';
 import Calendar from './components/Calendar.js';
 import Plan from './components/Plan.js';
 export default function App($app){
@@ -35,6 +35,22 @@ export default function App($app){
                     const newPlan = await getPlan(this.state.userId);
                     return {result : result, newPlan: newPlan};
                 }
+            },
+            planInsert : async () => {
+                const data = {
+                    userId : this.state.userId,
+                    title : document.getElementById('customMdTitle').value,
+                    content : document.getElementById('customMdContent').value,
+                    dt : document.getElementById('customMdStrtDt').value
+                }
+                const result = await insertplan(data);
+                if(result){
+                    const newPlan = await getPlan(this.state.userId);
+                    return {result : result, newPlan: newPlan};
+                }
+            },
+            chkCheck : (chkData) => {
+                console.log(chkData);
             }
         });
     }
