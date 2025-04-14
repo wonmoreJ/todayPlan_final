@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import app.todayplan.toplan.dto.CalendarDto;
 import app.todayplan.toplan.dto.PlanDto;
 import app.todayplan.toplan.service.PlanService;
 import app.todayplan.toplan.service.ToPlanService;
+
 
 @CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000"})
 @RestController
@@ -61,4 +63,9 @@ public class ToPlanController {
         return ResponseEntity.ok(result);
     }
 
+    @PutMapping("/updatePlan")
+    public ResponseEntity<PlanDto> updatePlan(@RequestBody PlanDto planDto){
+        PlanEntity planEntity = planService.updatePlan(planDto);
+        return ResponseEntity.ok(PlanDto.fromEntity(planEntity));
+    }
 }

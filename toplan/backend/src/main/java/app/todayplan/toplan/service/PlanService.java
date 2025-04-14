@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import app.todayplan.toplan.domain.PlanEntity;
 import app.todayplan.toplan.domain.BoardEntity;
@@ -82,6 +83,14 @@ public class PlanService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Transactional
+    public PlanEntity updatePlan (PlanDto planDto) {
+        PlanEntity plan = planRepository.findById(planDto.getId().longValue()).orElseThrow(() -> new RuntimeException("해당 플랜 없음"));
+        plan.setCommitChk(planDto.getCommitChk());
+        PlanEntity saved = planRepository.save(plan);
+        return saved;
     }
 
 }
